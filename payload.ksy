@@ -4,14 +4,14 @@ meta:
   endian: le
 
 seq:
-  # The Python script creates a pure 112-byte (0x70) crypto block.
+  # The Python script creates a 112-byte (0x70) crypto block.
   # This block is stripped by the (!SDW + BSSID) XOR pad before reading.
   - id: encrypted_nzon_data
     size: 112
 
 instances:
-  # FIX: This tells Kaitai to look at the stream from byte 0
-  # and apply your cleartext/decrypted type schema to it.
+  # This tells Kaitai to look at the stream from byte 0
+  # and apply cleartext/decrypted type schema to it.
   decrypted_view:
     pos: 0
     type: nzone_decrypted_frame
@@ -20,7 +20,7 @@ instances:
 types:
   nzone_decrypted_frame:
     seq:
-      # Offset 0x00: The target redirect URL written by the script
+      # Offset 0x00: The target redirect URL
       - id: redirect_url
         type: strz
         encoding: ASCII
@@ -29,7 +29,7 @@ types:
       - id: network_padding
         size: 4
 
-      # Offset 0x44: This is where 'wep_key' actually lives in the official spec
+      # Offset 0x44: This is where 'wep_key' actually lives
       - id: ap_crypto_key
         type: str
         size: 32
@@ -39,12 +39,12 @@ types:
       - id: dsi_client_flag
         type: u1
 
-      # Offset 0x65: This is where your 'wep_type' enum actually belongs
+      # Offset 0x65: This is where 'wep_type' enum  belongs
       - id: ap_crypto_type
         type: u1
         enum: wep_modes
 
-      # Offset 0x66: The 0x01 activation flag written by the script
+      # Offset 0x66: The 0x01 activation flag written
       - id: system_flags
         type: u1
 
@@ -56,11 +56,11 @@ types:
       - id: structural_padding
         size: 4
 
-      # Offset 0x6C: The 0x0428 validation marker written by the script
+      # Offset 0x6C: The 0x0428 validation marker 
       - id: magic_marker
         type: u2
 
-      # Offset 0x6E: The CRC16 generated dynamically by the script
+      # Offset 0x6E: The CRC16 generated dynamically
       - id: sub_payload_crc16
         type: u2
 
